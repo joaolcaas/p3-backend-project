@@ -1,20 +1,22 @@
-var method = User.prototype;
+class User{
+    constructor(name,email){
+        this.name = name;
+        this.email=email;
+        this.id = id;
+    }
 
+    get name(){
+        return this.name;
+    }
 
-function User(name,email){
-    this.name = name;
-    this.email = email;
+    get email(){
+        return this.email;
+    }
+
+    get id(){
+        return this.id;
+    }
 }
-
-
-method.getName = function(){
-    return this.name;
-}
-
-method.getEmail = function(){
-    return this.email;
-}
-
 
 
 module.exports = User;
