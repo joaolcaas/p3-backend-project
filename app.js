@@ -30,6 +30,18 @@ const users = [
         'games_matched':['CS GO']
 }]
 
+//add a user
+app.post('/add/user',function(req,res){
+    users.push({
+        'id':users.length + 1,
+        'name':req.query.name,
+        'email':req.query.email,
+        'games_matched':[req.query.games_matched]
+    });
+
+    return res.status(200).send('Cadastro feito com sucesso')
+})
+
 //initial page
 app.get('/',function(req,res){
     res.setHeader("Content-Type","application/json");

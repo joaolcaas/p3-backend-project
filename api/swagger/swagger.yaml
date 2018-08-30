@@ -1,0 +1,23 @@
+swagger: "2.0"
+info:
+  version: "1.0"
+  title: "ForFunMatch website"
+host: localhost:8080
+
+paths:
+    /movies:
+        summary: A set of movies
+
+components:
+    schemas:
+        Movie:
+            properties:
+                id:
+                    type: string
+                title:
+                    type: string
+                description:
+                    type: string
+            required:
+                - id
+                - title 
