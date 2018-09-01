@@ -3,13 +3,19 @@ var app = express();
 var User = require('./models/user')
 var morgan = require('morgan');
 var request = require('supertest')
+var validator = require('email-validator')
 
 app.use(morgan('tiny'));
 
 function findProduct (id) {
-    const product = users.find((item) => item.id === parseInt(id));
-    return product;
-  }
+    var final = null
+    users.forEach(function(element){
+        if(element.id == parseInt(id)){
+            final = element
+        }
+    });
+    return final
+}
 
 app.use('/showStatic',express.static(__dirname+'/static'));
 
@@ -32,15 +38,47 @@ const users = [
 
 //add a user
 app.post('/add/user',function(req,res){
-    users.push({
-        'id':users.length + 1,
-        'name':req.query.name,
-        'email':req.query.email,
-        'games_matched':[req.query.games_matched]
-    });
+    
+    if(validator.validate(req.query.email)){
+        users.push({
+            'id':users.length + 1,
+            'name':req.query.name,
+            'email':req.query.email,
+            'games_matched':[req.query.games_matched]
+        });
+        return res.status(200).send('Cadastro feito com sucesso')
+    }
 
-    return res.status(200).send('Cadastro feito com sucesso')
+    else{
+        return res.status(400).send('error')
+    }
 })
+
+//update user
+app.put('/update/user',function(req,res){
+    const user = findProduct(req.query.id);
+    if(user != null){
+        user.name = req.query.name || user.name
+        user.email = req.query.email || user.email
+        user.games_matched = req.query.games_matched || user.games_matched
+        return res.status(200).send('usuario atualizado')
+
+    }else{
+        return res.status(400).send('Não existe esse usuario para ser atualizado')
+    }
+});
+
+//delete a user
+app.delete('/delete/user/:id',function(req,res){
+    const user = findProduct(req.params.id);
+    if(user != null){
+        users.pop(user)
+        return res.status(200).send('usuario apagado')
+
+    }else{
+        return res.status(400).send('Não existe esse usuario para ser deletado')
+    }
+});
 
 //initial page
 app.get('/',function(req,res){
@@ -71,18 +109,18 @@ request(app)
 
 //return a specif user
 app.get('/user/:id',function(req,res){
-    const product = findProduct(req.params.id);
-    if (product) {
-      res.send(product);
+    const user = findProduct(req.params.id);
+    if (user != null) {
+      res.send(user);
     } else {
-      res.status(404).send(`Item ${req.params.id} não encontrado`);
+      res.status(404).send(`Usuario ${req.params.id} não encontrado`);
     }
 });
 
 //return all games matched from a specif user
 app.get('/user/:id/match',function(req,res){
-    const product = findProduct(req.params.id);
-    if (product) {
+    const user = findProduct(req.params.id);
+    if (user != null) {
       res.send(product.games_matched);
     } else {
       res.status(404).send(`Usuario ${req.params.id} não encontrado`);
@@ -96,9 +134,8 @@ app.get('/game',function(req,res){
     res.end(JSON.stringify(games))
 });
 
-
-
 app.listen(8080,function(){
     console.log("Listening on port 8080")
 });
+
 module.exports=app

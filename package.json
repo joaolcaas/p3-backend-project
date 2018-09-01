@@ -4,6 +4,7 @@
   "description": "Back end para projeto da disciplina de Programação 3",
   "main": "app.js",
   "dependencies": {
+    "email-validator": "^2.0.4",
     "express": "^4.16.3",
     "morgan": "^1.9.0",
     "nodemailer": "^4.6.8",
