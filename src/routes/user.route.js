@@ -3,6 +3,10 @@ const router = new express.Router();
 var validator = require('email-validator')
 const user_util = require('../util/user.util')
 const users = require('../data/user.json');
+var cache = require('memory-cache');
+
+var newCache = new cache.Cache();
+newCache.put('usuarios',users);
 
 router.use((req,res,next) => {
     next();
@@ -13,7 +17,7 @@ router.use((req,res,next) => {
  * return all users
  */
 router.get('/',function(req,res){
-    res.status(200).json({users})
+    res.status(200).send(newCache.get('usuarios'))
 });
 
 /**

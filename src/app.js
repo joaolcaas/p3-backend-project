@@ -1,4 +1,5 @@
 var express = require('express');
+const appHttp = require('http').createServer((req,res) => res.send('ahoy    '));
 var app = express();
 var morgan = require('morgan');
 var request = require('supertest')
@@ -14,9 +15,13 @@ const games = require('./data/game.json');
 
 const userRoute = require('./routes/user.route.js');
 const gameRoute = require('./routes/game.route.js');
+const docsRoute = require('./routes/docs.route.js');
+
+const PORT = process.env.PORT || 3000;
 
 app.use('/user', userRoute);
 app.use('/game', gameRoute);
+app.use('/docs',docsRoute);
 
 app.use((req,res,next) => {
   next();
@@ -31,8 +36,8 @@ app.get('/',function(req,res){
     res.end(JSON.stringify('Welcome to ForFunMatch!'))
 });
 
-app.listen(8080,function(){
-    console.log("Listening on port 8080")
+app.listen(PORT,function(){
+    console.log(`Listening on port ${PORT}`)
 });
 
 module.exports=app
