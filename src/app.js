@@ -13,9 +13,9 @@ app.use(morgan('tiny'));
 const users = require('./data/user.json');
 const games = require('./data/game.json');
 
-const userRoute = require('./routes/user.route.js');
-const gameRoute = require('./routes/game.route.js');
-const docsRoute = require('./routes/docs.route.js');
+const userRoute = require('./user/user.route.js');
+const gameRoute = require('./game/game.route.js');
+const docsRoute = require('./docs/docs.route.js');
 
 const PORT = process.env.PORT || 3000;
 
