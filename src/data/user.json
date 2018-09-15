@@ -2,10 +2,22 @@
     {"id": 1,
         "name": "João",
         "email": "joao.felipe@igor.com",
-        "games_matched":["dota2","artifact"]},
+        "games_matched":[{
+            "name":"João2",
+            "email":"joao.felipe@igor.com",
+            "game_matched":"dota",
+            "data":"12/10/1995 17:30"
+        }],
+        "interest_games":["dota","lol","cs"]},
 
     {"id": 2,
             "name": "João2",
             "email": "joao.felipe@igor.com",
-            "games_matched":["dota2","lol","CSGO"]}
+            "games_matched":[{
+                "name":"João",
+                "email":"joao.felipe@igor.com",
+                "game_matched":"dota",
+                "data":"12/10/1995 17:30"
+            }],
+            "interest_games":["dota","warcraft"]}
 ]

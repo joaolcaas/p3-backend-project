@@ -6,22 +6,20 @@ var request = require('supertest')
 
 app.use(morgan('tiny'));
 
-/**
- * constantes
- */
-
 const users = require('./data/user.json');
 const games = require('./data/game.json');
 
 const userRoute = require('./user/user.route.js');
 const gameRoute = require('./game/game.route.js');
 const docsRoute = require('./docs/docs.route.js');
+const matchRoute = require('./match/match.route.js')
 
 const PORT = process.env.PORT || 3000;
 
 app.use('/user', userRoute);
 app.use('/game', gameRoute);
 app.use('/docs',docsRoute);
+app.use('/match',matchRoute);
 
 app.use((req,res,next) => {
   next();
