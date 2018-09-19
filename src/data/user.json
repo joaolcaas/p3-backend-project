@@ -8,7 +8,10 @@
             "game_matched":"dota",
             "data":"12/10/1995 17:30"
         }],
-        "interest_games":["dota","lol","cs"]},
+        "interest_games":[{
+            "game":"xadrez",
+            "data":["12/10/1995 17:30"]
+        }]},
 
     {"id": 2,
             "name": "João2",
@@ -19,5 +22,8 @@
                 "game_matched":"dota",
                 "data":"12/10/1995 17:30"
             }],
-            "interest_games":["dota","warcraft"]}
+            "interest_games":[{
+                "game":"xadrez",
+                "data":["12/10/1995 17:30"]
+            }]}
 ]
