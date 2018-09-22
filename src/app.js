@@ -3,6 +3,10 @@ const appHttp = require('http').createServer((req,res) => res.send('ahoy    '));
 var app = express();
 var morgan = require('morgan');
 var request = require('supertest')
+var mongoose = require('mongoose')
+
+mongoose.Promise = Promise;
+mongoose.connect('mongodb://127.0.0.1/ffdb',{'useNewUrlParser':true});
 
 app.use(morgan('tiny'));
 
@@ -14,7 +18,7 @@ const gameRoute = require('./game/game.route.js');
 const docsRoute = require('./docs/docs.route.js');
 const matchRoute = require('./match/match.route.js')
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 app.use('/user', userRoute);
 app.use('/game', gameRoute);

@@ -15,7 +15,7 @@
 
     {"id": 2,
             "name": "João2",
-            "email": "joao.felipe@igor.com",
+            "email": "joao.felipe@ccc.com",
             "games_matched":[{
                 "name":"João",
                 "email":"joao.felipe@igor.com",

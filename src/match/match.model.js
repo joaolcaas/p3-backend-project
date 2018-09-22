@@ -3,25 +3,26 @@ var Schema = mongoose.Schema;
 
 var matchSchema= new Schema({
     
-    players:{
-        type:Array,
-        required:[True,"Why no players?"]
+    player:{
+        type:String,
+        required:true
+    },
+    email:{
+        type:String,
+        required:true
     },
     
     game_matched:{
         type:String,
-        required:True
+        required:true
     },
 
     game_time:{
         type:Date,
-        required:[
-            True,
-            "Game's data is required"
-        ]
+        required:true
     }
 
 })
 
-var Match = mongoose.model('Match',userSchema);
+var Match = mongoose.model('Match',matchSchema);
 module.exports = Match;
