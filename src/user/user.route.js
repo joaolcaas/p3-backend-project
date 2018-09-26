@@ -5,7 +5,7 @@ const user_util = require('../util/user.util')
 const users = require('../data/user.json');
 var cache = require('memory-cache');
 
-const userModel = require('./user.model')
+const modelUser = require('./user.model')
 
 var newCache = new cache.Cache();
 newCache.put('usuarios',users);
@@ -19,7 +19,7 @@ router.use((req,res,next) => {
  * return all users
  */
 router.get('/',function(req,res){
-    userModel.find({}).then((users,err)=>{
+    modelUser.find({}).then((users,err)=>{
         if(err){
             return res.status(400).send(err)
         }
@@ -34,7 +34,7 @@ router.get('/',function(req,res){
  * add an user into users
  */
 router.post('/',function(req,res){
-    const userCollec = userModel.estimatedDocumentCount();
+    const userCollec = modelUser.estimatedDocumentCount();
 
     if(validator.validate(req.query.email.toLowerCase())){
         userCollec.then((count)=>{
@@ -46,7 +46,7 @@ router.post('/',function(req,res){
         };
         users.push(user);
         
-        const newUser = new userModel(user)
+        const newUser = new modelUser(user)
         
         newUser.save((err)=>{
             if(err){

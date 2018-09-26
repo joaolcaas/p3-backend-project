@@ -20,7 +20,7 @@ var userSchema= new Schema({
         required:true,
     },
     games_matched:{
-        type:{},
+        type:[mongoose.Schema.games_matched],
         required:false
     },
     
@@ -29,7 +29,7 @@ var userSchema= new Schema({
         required:true
     },
     interest_game:{
-        type:[mongoose.Schema.interest_game],
+        type:{},
         required:false
     }
 })
