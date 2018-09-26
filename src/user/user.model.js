@@ -6,7 +6,10 @@ const matchSchema = require('../match/match.model');
 const interestSchema = require('../interest/interest.model');
 
 var userSchema= new Schema({
-
+    id:{
+        type:Number,
+        required:true
+    },
     name:{
         type:String,
         required:true

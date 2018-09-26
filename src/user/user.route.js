@@ -34,14 +34,16 @@ router.get('/',function(req,res){
  * add an user into users
  */
 router.post('/',function(req,res){
-    if(validator.validate(req.query.email.toLowerCase())){
-        const user = {
-            'id':users.length + 1,
-            'name':req.query.name,
-            'email':req.query.email.toLowerCase(),
-            'password':req.query.password,
-        }
+    const userCollec = userModel.estimatedDocumentCount();
 
+    if(validator.validate(req.query.email.toLowerCase())){
+        userCollec.then((count)=>{
+            const user = {
+                'id':count + 1,
+                'name':req.query.name,
+                'email':req.query.email.toLowerCase(),
+                'password':req.query.password,
+        };
         users.push(user);
         
         const newUser = new userModel(user)
@@ -49,12 +51,12 @@ router.post('/',function(req,res){
         newUser.save((err)=>{
             if(err){
                 const message = err.errmsg || err.message;
-                return res.status(400).json(message);
+                console.log(message)
             }
         return res.status(201).send('Cadastro feito com sucesso')
             
         });
-        
+    })        
     }
     else{
         return res.status(400).send('invalid email')
