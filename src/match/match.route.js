@@ -3,6 +3,8 @@ const router = new express.Router();
 const user_util = require('../util/user.util')
 const users = require('../data/user.json');
 const util = require('./match.util')
+const modelUser = require('../user/user.model')
+
 
 router.use((req,res,next) => {
     next();

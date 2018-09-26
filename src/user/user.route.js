@@ -30,6 +30,7 @@ router.get('/',function(req,res){
     })
 });
 
+
 /**
  * add an user into users
  */
@@ -51,9 +52,10 @@ router.post('/',function(req,res){
         newUser.save((err)=>{
             if(err){
                 const message = err.errmsg || err.message;
-                console.log(message)
+                res.status(400).send(message)
+            }else{
+                res.status(201).send('Cadastro feito com sucesso')
             }
-        return res.status(201).send('Cadastro feito com sucesso')
             
         });
     })        
@@ -67,43 +69,51 @@ router.post('/',function(req,res){
  * update user
  */
 router.put('/:id',function(req,res){
-    const user = user_util.findUser(users,req.params.id);
-    if(user != null){
-        user.name = req.query.name || user.name
-        user.email = req.query.email || user.email
-        user.games_matched = req.query.games_matched || user.games_matched
-        return res.status(200).send('usuario atualizado')
-
-    }else{
-        return res.status(400).send('Não existe esse usuario para ser atualizado')
-    }
+    modelUser.findOne({'id':req.params.id}).then((user,err)=>{
+        if(user == null || err){
+            return res.status(400).send('usuario não encontrado')
+        }else{
+            user.name = req.query.name || user.name
+            user.email = req.query.email || user.email 
+            user.password = req.query.password || user.password
+            user.save((err)=>{
+                if(err){
+                    const message = err.errmsg || err.message;
+                    res.status(400).send(message)
+                }else{
+                    res.status(201).send('Atualização feita com sucesso')
+                }
+                
+            });
+        }
+    })
 });
 
 /**
  * delete user
  */
+//https://mongoosejs.com/docs/schematypes.html#maps
 
 router.delete('/:id',function(req,res){
-    var index = users.indexOf(user_util.findUser(users,req.params.id));
-    if(index > -1 ){
-        users.splice(index,1)
-        return res.status(204).send('usuario apagado')
-
-    }else{
-        return res.status(400).send('Não existe esse usuario para ser deletado')
-    }
+    modelUser.deleteOne({'id':req.params.id}).then((report)=>{
+        if(report.n == 0){
+            return res.status(400).send('usuario não encontrado')
+        }
+        return res.status(200).send('usuario deletado com sucesso')
+    });
 });
 
 /**
  * return a specif user
  */
 router.get('/:id',function(req,res){
-    const user = user_util.findUser(users,req.params.id);
-    if (user != null) {
-      res.send(user);
-    } else {
-      res.status(404).send(`Usuario ${req.params.id} não encontrado`);
-    }
+    modelUser.findOne({'id':req.params.id}).then((user,err)=>{
+        if(err || user == null){
+            res.status(404).send(`Usuario ${req.params.id} não encontrado`);
+        }else{
+            res.send(user);
+        }
+    });
 });
 
 /**
