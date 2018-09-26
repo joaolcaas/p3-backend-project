@@ -23,11 +23,11 @@ router.put('/',function(req,res){
     const user2 = user_util.findUser(users,req.query.id2)
     const game = req.query.game
     const data = req.query.data
-
-    if(util.findGame(user1,game) == null && util.findGame(user2,game) == null){
-        return res.status(400).send('O outro usuário não contém esse game')
+        
+    if(util.findGame(user1,game) == false || util.findGame(user2,game) == false){
+        return res.status(400).send('Vocês não podem dar match,verifiquem se possuem o mesmo jogo')
     }
-    else if(util.findHour(util.findGame(user1,game),data) == false && util.findHour(util.findGame(user2,game),data) == false ){
+    else if(util.findHour(user1.interest_games,game,data) == false && util.findHour(user2.interest_games,game,data) == false ){
         return res.status(400).send('O outro usuário não contém esse horario')
     }
     const game_alredy_matched_user1 = {

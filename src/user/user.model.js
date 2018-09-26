@@ -17,7 +17,7 @@ var userSchema= new Schema({
         required:true,
     },
     games_matched:{
-        type:[mongoose.Schema.games_matched],
+        type:{},
         required:false
     },
     

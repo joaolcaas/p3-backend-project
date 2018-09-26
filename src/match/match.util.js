@@ -1,16 +1,14 @@
 function findGame(user,game){
-    var final = null;
-    user.interest_games.forEach(function(element){
-        if(element.game == game){
-            final = element   
-        }
-    });
-    return final;
+    if(user.interest_games[game]){
+        return true
+    }else{
+        return false
+    }
 }
 
-function findHour(interest,data){
+function findHour(interest_array,game,data){
     var final = false;
-    if(interest.data.includes(data)){
+    if(interest_array[game].includes(data)){
         final = true;
     }
     return final;
