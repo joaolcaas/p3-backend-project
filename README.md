@@ -10,4 +10,8 @@ Ideia do projeto:
 
 - **Quem pode usar?** - Qualquer pessoa que jogue de damas a futebol online.
 
+- **Instll**
 
+```sh
+  npm install
+```
