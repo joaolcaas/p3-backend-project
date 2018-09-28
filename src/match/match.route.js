@@ -10,47 +10,91 @@ router.use((req,res,next) => {
     next();
 });
 
-
-router.get('/',function(req,res){
-    const users_game = []
-    users.forEach(function(element){
-        users_game.push(element.games_matched)
-    });
-    res.send(users_game)
+//função que vai retornar todos os games marcados de um usuario
+router.get('/:id',function(req,res){
+    const user_id = req.params.id;
+    
+    modelUser.findOne({'id':user_id}).then((user,err)=>{
+        if(err || user == null){
+            return res.status(400).send('usuario não encontrado')
+        }else{
+            if(users.games_matched != null){
+                return res.status(200).send(user.games_matched)
+            }else{
+                return res.status(400).send('você não tem jogos marcados')
+            }
+        }
+    })
 });
 
+
 // função que vai marcar jogos
-router.put('/',function(req,res){
-    const user1 = user_util.findUser(users,req.query.id1) 
-    const user2 = user_util.findUser(users,req.query.id2)
-    const game = req.query.game
-    const data = req.query.data
-        
-    if(util.findGame(user1,game) == false || util.findGame(user2,game) == false){
-        return res.status(400).send('Vocês não podem dar match,verifiquem se possuem o mesmo jogo')
-    }
-    else if(util.findHour(user1.interest_games,game,data) == false && util.findHour(user2.interest_games,game,data) == false ){
-        return res.status(400).send('O outro usuário não contém esse horario')
-    }
-    const game_alredy_matched_user1 = {
-        "nome":user2.name,
-        "email":user2.email,
-        "game":game,
-        "data":data
-    }
-    const game_alredy_matched_user2 = {
-        "nome":user1.name,
-        "email":user1.email,
-        "game":game,
-        "data":data
-    }
+router.put('/',function(req,res){  
+    const user_id1 = req.query.id1;
+    const user_id2 = req.query.id2;
+    const game = req.query.game;
+    const data = req.query.data;
+    
 
-    user1.games_matched.push(game_alredy_matched_user1)
-    user2.games_matched.push(game_alredy_matched_user2)
+    modelUser.findOne({'id':user_id1}).then((user1,err1)=>{
+        if(err1 || user1 == null){
+            return res.status(400).send('usuario 1 não encontrado');
+        }else{
+            modelUser.findOne({'id':user_id2}).then((user2,err2)=>{
+                if(err2 || user2 == null){
+                    return res.status(400).send('usuario 2 não encontrado');
+                }else{
+                    const interest_usr1 = user1.interest_game.get(game)
+                    const interest_usr2 = user2.interest_game.get(game)
+                    const match_usr1 = user1.games_matched;
+                    const match_usr2 = user2.games_matched;
+                    if(interest_usr1 != null && interest_usr2 != null ){
+                        if(interest_usr1.includes(data) && interest_usr2.includes(data)){
+                            const usr1_match = {
+                                'player':user2.name,
+                                'email':user2.email,
+                                'game_matched':game,
+                                'game_time':data
+                            }
+                            const usr2_match = {
+                                'player':user1.name,
+                                'email':user1.email,
+                                'game_matched':game,
+                                'game_time':data
+                            }
+                            if(interest_usr1.length == 1){
+                                user1.interest_game.delete(game)
+                            }
+                            if(interest_usr1.length == 1){
+                                user2.interest_game.delete(game)
+                            }
+                            match_usr1.push(usr1_match);
+                            user1.save((error1)=>{
+                                if(error1){
+                                    const message = error1.errmsg || error1.message;
+                                    return res.status(400).send(message)
+                                }
+                            
+                        });
+                            match_usr2.push(usr2_match);
+                            user2.save((error2)=>{
+                                if(error2){
+                                    const message = error2.errmsg || error2.message;
+                                    return res.status(400).send(message)
+                                }
+                            
+                        });
 
-    return res.status(200).send('Jogo marcado com sucesso')
-    //só falta apagar dos interest games
-
+                        return res.status(200).send('jogo marcado')
+                        }
+                    }
+                    else{
+                        return res.status(403).send('não é possível fazer o match')
+                    }
+                }
+            })        
+        }
+    })
  });
 
 module.exports = router;

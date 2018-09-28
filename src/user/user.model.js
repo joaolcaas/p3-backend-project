@@ -28,9 +28,12 @@ var userSchema= new Schema({
         type:String,
         required:true
     },
+
     interest_game:{
         type:Map,
-        of:Array
+        of:Array,
+        required: true,
+        default: new Map()
     }
 })
 

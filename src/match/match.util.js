@@ -1,19 +1,17 @@
-function findGame(user,game){
-    if(user.interest_games[game]){
-        return true
-    }else{
-        return false
-    }
-}
+function checkMatch(user1,user2,data,game){
+    var retorno = false;
+    const interest_usr1 = user1.interest_game.get(game)
+    const interest_usr2 = user2.interest_game.get(game)
 
-function findHour(interest_array,game,data){
-    var final = false;
-    if(interest_array[game].includes(data)){
-        final = true;
+    if(interest_usr1 != null && interest_usr2.interest_game.get(game) != null ){
+        if(interest_usr1.includes(data) && interest_usr2.includes(data)){
+            retorno = true;
+        }
     }
-    return final;
+    return retorno;
+  
 }
 
 module.exports = {
-    findGame,findHour
+   checkMatch
 }
