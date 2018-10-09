@@ -2,7 +2,6 @@ const express = require('express');
 const router = new express.Router();
 var validator = require('email-validator')
 const user_util = require('../util/user.util')
-const users = require('../data/user.json');
 var cache = require('memory-cache');
 const bcrypt = require('bcryptjs');
 const saltRounds = 10;
@@ -11,7 +10,6 @@ const auth = require('../auth/auth.service')
 const modelUser = require('./user.model')
 
 var newCache = new cache.Cache();
-newCache.put('usuarios',users);
 
 router.use((req,res,next) => {
     next();

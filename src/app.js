@@ -1,13 +1,11 @@
-var express = require('express');
-const appHttp = require('http').createServer((req,res) => res.send('ahoy'));
-var morgan = require('morgan');
-var request = require('supertest')
-var mongoose = require('mongoose')
-const modelUser = require('./user/user.model')
+const express = require('express');
+const morgan = require('morgan');
+const request = require('supertest')
+const mongoose = require('mongoose')
 const passport = require('passport');
 const session = require('express-session');
 const HALF_HOUR = 1800000;
-
+const cors = require('cors')
 
 mongoose.Promise = Promise;
 mongoose.connect('mongodb://127.0.0.1/ffdb',{'useNewUrlParser':true});
@@ -22,6 +20,8 @@ app.use(session({'secret': 'secret',
   'saveUninitialized': false}));
 app.use(passport.initialize());
 app.use(passport.session());
+
+let corsOptions = {}
 
 const userRoute = require('./user/user.route.js');
 const gameRoute = require('./game/game.route.js');

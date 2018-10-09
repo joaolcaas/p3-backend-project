@@ -1,8 +1,6 @@
 const express = require('express');
 const router = new express.Router();
 
-const games = require('../data/game.json');
-
 router.use((req,res,next) => {
     next();
 });
@@ -11,6 +9,6 @@ router.use((req,res,next) => {
  */
 router.get('/',function(req,res){
     res.setHeader("Content-Type","application/json");
-    res.end(JSON.stringify(games))
+    res.end(JSON.stringify('oi'))
 });
 module.exports = router;
