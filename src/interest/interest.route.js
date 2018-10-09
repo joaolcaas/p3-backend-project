@@ -1,12 +1,12 @@
 const express = require('express');
 const router = new express.Router();
 const modelUser = require('../user/user.model');
-
+const auth = require('../auth/auth.service');
 router.use((req,res,next) => {
     next();
 });
 
-router.get('/:id',function(req,res){
+router.get('/:id',auth.ensureAuthenticated, auth.authenticateById,function(req,res){
     const user_id = req.params.id;
 
     modelUser.findOne({'id':user_id}).then((user,err)=>{
@@ -23,7 +23,7 @@ router.get('/:id',function(req,res){
     
 })
 
-router.put('/:id',function(req,res){
+router.put('/:id',auth.ensureAuthenticated, auth.authenticateById,function(req,res){
     const user_id = req.params.id;
     const game = req.query.game;
     const data = req.query.data;

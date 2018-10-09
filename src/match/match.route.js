@@ -4,14 +4,14 @@ const user_util = require('../util/user.util')
 const users = require('../data/user.json');
 const util = require('./match.util')
 const modelUser = require('../user/user.model')
-
+const auth = require('../auth/auth.service');
 
 router.use((req,res,next) => {
     next();
 });
 
 //função que vai retornar todos os games marcados de um usuario
-router.get('/:id',function(req,res){
+router.get('/:id', auth.ensureAuthenticated, auth.authenticateById,function(req,res){
     const user_id = req.params.id;
     
     modelUser.findOne({'id':user_id}).then((user,err)=>{

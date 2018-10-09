@@ -4,6 +4,9 @@ var validator = require('email-validator')
 const user_util = require('../util/user.util')
 const users = require('../data/user.json');
 var cache = require('memory-cache');
+const bcrypt = require('bcryptjs');
+const saltRounds = 10;
+const auth = require('../auth/auth.service')
 
 const modelUser = require('./user.model')
 
@@ -36,6 +39,12 @@ router.get('/',function(req,res){
  */
 router.post('/',function(req,res){
     const userCollec = modelUser.estimatedDocumentCount();
+    
+    var salt = bcrypt.genSaltSync(saltRounds);
+    var hash = bcrypt.hashSync(req.query.password,salt);
+
+    req.query.password = hash
+
 
     if(validator.validate(req.query.email.toLowerCase())){
         userCollec.then((count)=>{
@@ -68,7 +77,7 @@ router.post('/',function(req,res){
 /**
  * update user
  */
-router.put('/:id',function(req,res){
+router.put('/:id', auth.ensureAuthenticated, auth.authenticateById,function(req,res){
     modelUser.findOne({'id':req.params.id}).then((user,err)=>{
         if(user == null || err){
             return res.status(400).send('usuario não encontrado')
@@ -94,7 +103,7 @@ router.put('/:id',function(req,res){
  */
 //https://mongoosejs.com/docs/schematypes.html#maps
 
-router.delete('/:id',function(req,res){
+router.delete('/:id', auth.ensureAuthenticated, auth.authenticateById,function(req,res){
     modelUser.deleteOne({'id':req.params.id}).then((report)=>{
         if(report.n == 0){
             return res.status(400).send('usuario não encontrado')
@@ -106,7 +115,7 @@ router.delete('/:id',function(req,res){
 /**
  * return a specif user
  */
-router.get('/:id',function(req,res){
+router.get('/:id', auth.ensureAuthenticated, auth.authenticateById,function(req,res){
     modelUser.findOne({'id':req.params.id}).then((user,err)=>{
         if(err || user == null){
             res.status(404).send(`Usuario ${req.params.id} não encontrado`);
@@ -119,7 +128,7 @@ router.get('/:id',function(req,res){
 /**
  * return all games matched from a specif user
  */
-router.get('/:id/match',function(req,res){
+router.get('/:id/match', auth.ensureAuthenticated, auth.authenticateById,function(req,res){
     const user = user_util.findUser(users,req.params.id);
     if (user != null) {
       res.send(user.games_matched);
