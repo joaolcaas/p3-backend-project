@@ -1,9 +1,8 @@
 var express = require('express');
-const appHttp = require('http').createServer((req,res) => res.send('ahoy'));
 var morgan = require('morgan');
 var request = require('supertest')
 var mongoose = require('mongoose')
-const modelUser = require('./user/user.model')
+const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
 const HALF_HOUR = 1800000;
@@ -42,6 +41,21 @@ app.use((req,res,next) => {
   next();
 });
 
+let corsOptions = {};
+
+const nodeEnv = process.env.NODE_ENV || 'development';
+
+if (nodeEnv === 'production') {
+  corsOptions = {
+    'origin': 'http://localhost:3000',
+    'optionsSuccessStatus': 200
+  };
+  console.log('The system is running in production');
+} else {
+  console.log('The system is not running in production');
+}
+
+app.use(cors(corsOptions));
 app.use('/showStatic',express.static(__dirname+'/static'));
 
 
@@ -49,6 +63,8 @@ app.get('/',function(req,res){
     res.setHeader("Content-Type","application/json");
     res.end(JSON.stringify('Welcome to ForFunMatch!'))
 });
+
+
 
 app.listen(PORT,function(){
     console.log(`Listening on port ${PORT}`)
