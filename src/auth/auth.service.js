@@ -17,7 +17,18 @@ const authenticateById = (req,res,next) => {
     return res.status(400).json('Sem permissão');
 };
 
+const authenticateByRole = (req,res,next) =>{
+    const userRole = req.user.role;
+    if(userRole){
+        if(userRole === 'adm'){
+            return next();
+        }
+        return res.status(401).json('Sem permissão para esta ação!');
+    }
+    return res.status(400).json('Sem permissão');
+};
 module.exports = {
     ensureAuthenticated,
-    authenticateById
+    authenticateById,
+    authenticateByRole
 };

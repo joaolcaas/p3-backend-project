@@ -23,7 +23,7 @@ router.get('/:id',auth.ensureAuthenticated, auth.authenticateById,function(req,r
     
 })
 
-router.put('/:id',auth.ensureAuthenticated, auth.authenticateById,function(req,res){
+router.post('/:id',auth.ensureAuthenticated, auth.authenticateById,function(req,res){
     const user_id = req.params.id;
     const game = req.query.game;
     const data = req.query.data;

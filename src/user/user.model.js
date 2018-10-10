@@ -2,9 +2,6 @@ var mongoose = require('mongoose');
 var validator = require('email-validator');
 var Schema = mongoose.Schema;
 
-const matchSchema = require('../match/match.model');
-const interestSchema = require('../interest/interest.model');
-
 var userSchema= new Schema({
     id:{
         type:Number,
@@ -34,8 +31,14 @@ var userSchema= new Schema({
         of:Array,
         required: true,
         default: new Map()
-    }
-})
+    },
+    
+    role:{
+        type:String,
+        required:true,
+        enum:['gamer','adm']
+    }},
+    {'versionKey': false})
 
 var User = mongoose.model('User',userSchema);
 module.exports = User;

@@ -14,9 +14,9 @@
  *          games_matched:
  *              type: array
  *              example: ['dota2','lol']
- *          type:
+ *          role:
  *              type: string
- *              example: admin
+ *              example: adm
  *
  * /usuario:
  *   get:

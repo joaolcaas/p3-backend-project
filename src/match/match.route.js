@@ -1,8 +1,5 @@
 const express = require('express');
 const router = new express.Router();
-const user_util = require('../util/user.util')
-const users = require('../data/user.json');
-const util = require('./match.util')
 const modelUser = require('../user/user.model')
 const auth = require('../auth/auth.service');
 
@@ -29,7 +26,7 @@ router.get('/:id', auth.ensureAuthenticated, auth.authenticateById,function(req,
 
 
 // função que vai marcar jogos
-router.put('/',function(req,res){  
+router.post('/',function(req,res){  
     const user_id1 = req.query.id1;
     const user_id2 = req.query.id2;
     const game = req.query.game;

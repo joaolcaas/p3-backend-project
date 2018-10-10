@@ -2,7 +2,6 @@ const express = require('express');
 const router = new express.Router();
 var validator = require('email-validator')
 const user_util = require('../util/user.util')
-const users = require('../data/user.json');
 var cache = require('memory-cache');
 const bcrypt = require('bcryptjs');
 const saltRounds = 10;
@@ -10,8 +9,6 @@ const auth = require('../auth/auth.service')
 
 const modelUser = require('./user.model')
 
-var newCache = new cache.Cache();
-newCache.put('usuarios',users);
 
 router.use((req,res,next) => {
     next();
@@ -53,9 +50,8 @@ router.post('/',function(req,res){
                 'name':req.query.name,
                 'email':req.query.email.toLowerCase(),
                 'password':req.query.password,
+                'role':req.query.role
         };
-        users.push(user);
-        
         const newUser = new modelUser(user)
         
         newUser.save((err)=>{
@@ -138,18 +134,6 @@ router.get('/:id/match', auth.ensureAuthenticated, auth.authenticateById,functio
 
 });
 
-/**
- * list all users that has params.game
- */
-router.get('/:game',function(req,res){
-    const users_game = []
-    users.forEach(function(element){
-        if(element.games_matched.includes(req.params.game)){
-            users_game.push(element)
-        }
-    });
-    res.send(users_game)
-});
 
 
 module.exports = router;
