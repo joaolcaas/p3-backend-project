@@ -10,6 +10,6 @@ router.post('/',controller.login);
 
 router.delete('/',auth.ensureAuthenticated,controller.logout);
 
-router.get('/auth',controller.auth);
+router.get('/auth',controller.check);
 
 module.exports = router;

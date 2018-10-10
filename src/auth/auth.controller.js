@@ -22,7 +22,7 @@ exports.logout = (req,res,next)=>{
     res.json('Deslogado com sucesso');
 };
 
-exports.auth = (req,res,next)=>{
+exports.check = (req,res,next)=>{
     if (req.isAuthenticated()) {
         res.status(200).json({'user': req.user,
         'status': true});
