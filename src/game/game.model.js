@@ -1,18 +1,19 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 
 var gameSchema= new Schema({
 
     id:{
-        type:int,
+        type:Number,
         required:true
     },
     name:{
         type:String,
-        required:true
-    }
-})
+        required:true,
+        unique:true
+    }},
+    {'versionKey': false})
 
 var Game = mongoose.model('Game',gameSchema);
 module.exports = Game;
