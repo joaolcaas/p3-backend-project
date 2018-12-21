@@ -22,6 +22,7 @@ app.use(session({'secret': 'secret',
 app.use(passport.initialize());
 app.use(passport.session());
 
+
 const userRoute = require('./user/user.route.js');
 const gameRoute = require('./game/game.route.js');
 const docsRoute = require('./docs/docs.route.js');
@@ -55,7 +56,7 @@ if (nodeEnv === 'production') {
   console.log('The system is not running in production');
 }
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use('/showStatic',express.static(__dirname+'/static'));
 
 

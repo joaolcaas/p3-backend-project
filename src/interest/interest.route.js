@@ -3,8 +3,8 @@ const router = new express.Router();
 const auth = require('../auth/auth.service');
 const controller = require('./interest.controller');
 
-router.get('/:id',auth.ensureAuthenticated, auth.authenticateById,controller.getinterst);
+router.get('/:id',controller.getinterst);
 
-router.post('/:id',auth.ensureAuthenticated,auth.authenticateById,controller.postinterest);
+router.post('/:id',controller.postinterest);
 
 module.exports = router;

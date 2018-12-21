@@ -8,6 +8,6 @@ router.use((req,res,next) => {
 });
 router.get('/',controller.allgames);
 
-router.post('/',auth.ensureAuthenticated,auth.authenticateByRole,controller.postgame);
+router.post('/',controller.postgame);
 
 module.exports = router;
